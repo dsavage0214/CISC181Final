@@ -288,13 +288,15 @@ public class LoanCalcViewController implements Initializable {
 		
 		lblTotalInterest.setText(fmtCurrency.format(loanExtra.getTotalInterest()));
 		
-		lblTotalPayemnts.setText(fmtCurrency.format(loanExtra.GetPMT()));
+		
 		
 		lblInterestSaved.setText(fmtCurrency.format(loanNoExtra.getTotalInterest() -  loanExtra.getTotalInterest()));
 		lblPaymentsSaved
 				.setText(String.valueOf(loanNoExtra.getLoanPayments().size() - loanExtra.getLoanPayments().size()));
 
-		lblMonthlyPayment.setText(fmtCurrency.format(loanExtra.getLoanPayments().get(0).getPayment()));
+		lblMonthlyPayment.setText(fmtCurrency.format(loanExtra.getLoanPayments().get(0).getPayment()
+				+loanExtra.getAdditionalPayment()
+				+loanExtra.getEscrow()));
 		
 		XYChart.Series seriesExtra = new XYChart.Series();
 		XYChart.Series seriesNoExtra = new XYChart.Series();
