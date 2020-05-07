@@ -137,15 +137,15 @@
                               </AnchorPane>
                            </content>
                       </Tab>
-<!--                       <Tab text="Stacked Bar Chart"> -->
-<!--                            <content> -->
-<!--                               <AnchorPane fx:id="apAreaChart" prefHeight="200.0" prefWidth="200.0"> -->
-<!--                                  <children> -->
-<!--                                     <HBox fx:id="hbChart" layoutX="11.0" layoutY="10.0" prefHeight="324.0" prefWidth="839.0" /> -->
-<!--                                  </children> -->
-<!--                               </AnchorPane> -->
-<!--                            </content> -->
-<!--                       </Tab> -->
+                      <Tab text="Stacked Bar Chart">
+                           <content>
+                              <AnchorPane fx:id="barAreaChart" prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <HBox fx:id="stackedBarChart" layoutX="11.0" layoutY="10.0" prefHeight="324.0" prefWidth="839.0" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                      </Tab>
                     </tabs>
                   </TabPane>
 					</children>
