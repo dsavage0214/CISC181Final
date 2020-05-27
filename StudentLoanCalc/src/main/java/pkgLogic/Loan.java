@@ -31,14 +31,15 @@ public class Loan {
 
 		double RemainingBalance = LoanAmount;
 		int PaymentCnt = 1;
-		while (RemainingBalance >= this.GetPMT()) {
-			Payment payment = new Payment(RemainingBalance, PaymentCnt++, startDate, this);
+		while (RemainingBalance >= this.GetPMT() + this.AdditionalPayment) {
+
+			Payment payment = new Payment(RemainingBalance, PaymentCnt++, startDate, this, false);
 			RemainingBalance = payment.getEndingBalance();
 			startDate = startDate.plusMonths(1);
 			loanPayments.add(payment);
 		}
 
-		Payment payment = new Payment(RemainingBalance, PaymentCnt++, startDate, this);
+		Payment payment = new Payment(RemainingBalance, PaymentCnt++, startDate, this, true);
 		loanPayments.add(payment);
 	}
 
@@ -60,9 +61,23 @@ public class Loan {
 	}
 
 	public double getTotalInterest() {
+ 
 		double interest = 0;
-		interest = this.getTotalPayments() - this.LoanAmount;
+		for (Payment val : this.loanPayments) {
+			interest += val.getInterestPayment();
+		}
 		return interest;
+		
+	}
+	
+	public double getTotalEscrow() {
+		 
+		double escrow = 0;
+		for (Payment val : this.loanPayments) {
+			escrow += val.getEscrowPayment();
+		}
+		return escrow;
+		
 	}
 
 	public double getLoanAmount() {

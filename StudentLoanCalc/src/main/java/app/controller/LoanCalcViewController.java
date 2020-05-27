@@ -47,6 +47,8 @@ import javafx.scene.control.DatePicker;
 
 public class LoanCalcViewController implements Initializable {
 
+	private NumberFormat fmtCurrency = NumberFormat.getCurrencyInstance(Locale.US);
+	
 	private StudentCalc SC = null;
 
 	@FXML
@@ -87,6 +89,9 @@ public class LoanCalcViewController implements Initializable {
 
 	@FXML
 	private Label lblPaymentsSaved;
+	
+	@FXML
+	private Label lblTotalEscrow;
 
 	@FXML
 	private TableView<Payment> tvResults;
@@ -137,6 +142,13 @@ public class LoanCalcViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		
+		LoanAmount.setText("269229");
+		InterestRate.setText("2.99");
+		NbrOfYears.setText("15");
+		
+		
+		
 		cmbLoanType.getItems().addAll("Home", "Auto", "School");
 
 		cmbLoanType.getSelectionModel().selectFirst();
@@ -221,6 +233,7 @@ public class LoanCalcViewController implements Initializable {
 		lblPaymentsSaved.setText("");
 		lblTotalInterest.setText("");
 		lblTotalPayemnts.setText("");
+		lblTotalEscrow.setText("");
 
 	}
 
@@ -291,7 +304,7 @@ public class LoanCalcViewController implements Initializable {
 			paymentList.add(p);
 		}
 
-		NumberFormat fmtCurrency = NumberFormat.getCurrencyInstance(Locale.US);
+		
 		lblTotalPayemnts.setText(fmtCurrency.format(loanExtra.getTotalPayments()));
 
 		lblTotalInterest.setText(fmtCurrency.format(loanExtra.getTotalInterest()));
@@ -300,9 +313,12 @@ public class LoanCalcViewController implements Initializable {
 		lblPaymentsSaved
 				.setText(String.valueOf(loanNoExtra.getLoanPayments().size() - loanExtra.getLoanPayments().size()));
 
-		lblMonthlyPayment.setText(fmtCurrency.format(loanExtra.getLoanPayments().get(0).getPayment()
-				+ loanExtra.getAdditionalPayment() + loanExtra.getEscrow()));
-
+		lblMonthlyPayment.setText(fmtCurrency.format(
+				loanExtra.GetPMT() + 
+				//loanExtra.getLoanPayments().get(0).getPayment()
+				+ loanExtra.getAdditionalPayment() + loanExtra.getEscrow()));		
+		lblTotalEscrow.setText(fmtCurrency.format(loanExtra.getTotalEscrow()));
+		
 		XYChart.Series seriesExtra = new XYChart.Series();
 		XYChart.Series seriesNoExtra = new XYChart.Series();
 
@@ -332,13 +348,28 @@ public class LoanCalcViewController implements Initializable {
 
 		areaChartAmortization.getData().addAll(seriesExtra, seriesNoExtra);
 
+		
+		
+		
 		for (final Series<Number, Number> series : areaChartAmortization.getData()) {
 			for (final Data<Number, Number> data : series.getData()) {
-				Tooltip tooltip = new Tooltip();
-				tooltip.setText(data.getYValue().toString());
+				Tooltip tooltip = new Tooltip();				
+				
+				tooltip.setText(fmtCurrency.format(data.getYValue()));
 				Tooltip.install(data.getNode(), tooltip);
 			}
 		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		hbChart.getChildren().add(areaChartAmortization);
 
 		createStackedBar();
@@ -352,6 +383,10 @@ public class LoanCalcViewController implements Initializable {
 		principalPayments.setName("Principle");
 		XYChart.Series<String, Number> interestPayments = new XYChart.Series<>();
 		interestPayments.setName("Interest");
+		
+		XYChart.Series<String, Number> escrowPayments = new XYChart.Series<>();
+		escrowPayments.setName("Escrow");
+		
 		for (Payment P : paymentList) {
 			if (!dates.contains(Integer.toString(P.getDueDate().getYear()))) {
 				dates.add(Integer.toString(P.getDueDate().getYear()));
@@ -362,6 +397,10 @@ public class LoanCalcViewController implements Initializable {
 			interestPayments.getData().add(new XYChart.Data<String, Number>(
 					Integer.toString(P.getDueDate().getYear()), 
 					P.getInterestPayment()));
+			
+			escrowPayments.getData().add(new XYChart.Data<String, Number>(
+					Integer.toString(P.getDueDate().getYear()), 
+					P.getEscrowPayment()));
 		}
 		
 		xAxis.setCategories(FXCollections
@@ -373,9 +412,9 @@ public class LoanCalcViewController implements Initializable {
 		StackedBarChart<String, Number> mystackedBarChart = new StackedBarChart<>(xAxis, yAxis);
 		mystackedBarChart.setTitle("Monthly Payments");
 		// Setting the data to bar chart
-		mystackedBarChart.getData().addAll(principalPayments, interestPayments);
-
+		mystackedBarChart.getData().addAll(principalPayments, interestPayments, escrowPayments);
 		stackedBarChart.getChildren().add(mystackedBarChart);
+		
 	}
 
 	/**

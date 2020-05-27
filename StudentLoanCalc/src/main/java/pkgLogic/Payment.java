@@ -28,38 +28,25 @@ public class Payment {
 
 	private NumberFormat fmtCurrency = NumberFormat.getCurrencyInstance();
 
-	public Payment(double beginningBalance, int paymentNbr, LocalDate dueDate, Loan loan) {
-		boolean bFinalPayment = false;
+	public Payment(double beginningBalance, int paymentNbr, LocalDate dueDate, Loan loan, boolean bLastPayment) {
+
 		this.PaymentNbr = paymentNbr;
-		this.DueDate = dueDate;
-
-		if (loan.GetPMT() + loan.getEscrow() < beginningBalance)
-			this.Payment = loan.GetPMT() + loan.getEscrow();
-		else
-		{
-			this.Payment = beginningBalance;
-			bFinalPayment = true;
-		}
-
-		this.AdditionalPayment = loan.getAdditionalPayment();
 		this.EscrowPayment = loan.getEscrow();
+		this.DueDate = dueDate;
 		this.InterestPayment = beginningBalance * (loan.getInterestRate() / 12);
 
-		this.Principle = loan.GetPMT() + loan.getAdditionalPayment() - this.InterestPayment;
-
-		if (loan.GetPMT() + loan.getAdditionalPayment() - this.InterestPayment > this.Payment) {
-			this.Principle = this.Payment - this.InterestPayment;
-		} else
-			this.Principle = loan.GetPMT() + loan.getAdditionalPayment() - this.InterestPayment;
-
-		if (bFinalPayment) {
+		if (bLastPayment) {
+			this.Payment = beginningBalance;// + (beginningBalance * (loan.getInterestRate() / 12));
+			this.Principle = beginningBalance - this.InterestPayment;
+			this.AdditionalPayment = 0;
 			this.EndingBalance = 0;
+
+		} else {
+			this.Payment = loan.GetPMT() + loan.getAdditionalPayment();
+			this.Principle = loan.GetPMT() + loan.getAdditionalPayment() - this.InterestPayment;
+			this.AdditionalPayment = loan.getAdditionalPayment();
+			this.EndingBalance = beginningBalance - this.Principle;
 		}
-		else
-		{
-			this.EndingBalance = beginningBalance - this.Principle;	
-		}
-		
 	}
 
 	public int getPaymentNbr() {
