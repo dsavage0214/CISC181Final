@@ -7,13 +7,34 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
 		<plugins>
+
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>app.StudentCalc</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>13</release>
-					<compilerArgs>--enable-preview</compilerArgs>
+					<release>14</release>
 				</configuration>
 			</plugin>
 
@@ -36,8 +57,8 @@
 		<!-- <JavaFX.Platform>mac</JavaFX.Platform> -->
 		<!-- <JavaFX.Platform>linux</JavaFX.Platform> -->
 
-		<java.version>1.13</java.version>
-		<JavaFX.Version>13</JavaFX.Version>
+		<java.version>1.14</java.version>
+		<JavaFX.Version>14</JavaFX.Version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -116,13 +137,13 @@
 			<artifactId>junit-platform-commons</artifactId>
 			<version>1.5.2</version>
 		</dependency>
-		
-<!-- https://mvnrepository.com/artifact/com.yahoofinance-api/YahooFinanceAPI -->
-<dependency>
-    <groupId>com.yahoofinance-api</groupId>
-    <artifactId>YahooFinanceAPI</artifactId>
-    <version>3.5.0</version>
-</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.yahoofinance-api/YahooFinanceAPI -->
+		<dependency>
+			<groupId>com.yahoofinance-api</groupId>
+			<artifactId>YahooFinanceAPI</artifactId>
+			<version>3.5.0</version>
+		</dependency>
 
 	</dependencies>
 
