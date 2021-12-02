@@ -142,13 +142,13 @@ public class LoanCalcViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		
-		LoanAmount.setText("269229");
-		InterestRate.setText("2.99");
-		NbrOfYears.setText("15");
-		
-		
-		
+		//TODO: This is for you... so you don't have to type in values over and over.  
+		//	Uncomment the next three lines to set these default values
+		/*		
+		LoanAmount.setText("75000");
+		InterestRate.setText("6.58");
+		NbrOfYears.setText("20");
+		*/
 		cmbLoanType.getItems().addAll("Home", "Auto", "School");
 
 		cmbLoanType.getSelectionModel().selectFirst();
@@ -224,16 +224,14 @@ public class LoanCalcViewController implements Initializable {
 	@FXML
 	private void btnClearResults(ActionEvent event) {
 
+		
 		paymentList.clear();
 		hbChart.getChildren().clear();
 		stackedBarChart.getChildren().clear();
-
+		
 		lblInterestSaved.setText("");
-		lblMonthlyPayment.setText("");
-		lblPaymentsSaved.setText("");
-		lblTotalInterest.setText("");
-		lblTotalPayemnts.setText("");
-		lblTotalEscrow.setText("");
+		
+		//TODO: The line above shows you how to clear lblInterestSaved.  Clear the rest of the calculated fields
 
 	}
 
@@ -242,28 +240,24 @@ public class LoanCalcViewController implements Initializable {
 		// create new boolean to check if an error needs to be shown
 		boolean goodtogo = true;
 		// Validate LoanAmount isn't empty
+		
+		
 		if (LoanAmount.getText().trim().isEmpty() || !(Double.parseDouble(LoanAmount.getText().trim()) > 0)) {
 			contentText.append("Loan Amount must be a positive double. \n");
 			goodtogo = false;
 		}
-		if (InterestRate.getText().trim().isEmpty() || Double.parseDouble(InterestRate.getText().trim()) < 1
-				|| Double.parseDouble(InterestRate.getText().trim()) > 30) {
-			contentText.append("Interest Rate must be a positive value between 1 and 30 (inclusive). \n");
-			goodtogo = false;
-		}
-		if (NbrOfYears.getText().trim().isEmpty() || !(Integer.parseInt(NbrOfYears.getText().trim()) > 0)) {
-			contentText.append("Number of Years must be a positive integer. \n");
-			goodtogo = false;
-		}
-		if (!EscrowAmount.getText().trim().isEmpty() && !(Double.parseDouble(EscrowAmount.getText().trim()) >= 0)) {
-			contentText.append("Escrow Amount must be a positive double. \n");
-			goodtogo = false;
-		}
-		if (!AdditionalPayment.getText().trim().isEmpty()
-				&& !(Double.parseDouble(AdditionalPayment.getText().trim()) >= 0)) {
-			contentText.append("Additional Payment must be a positive double. \n");
-			goodtogo = false;
-		}
+		
+		//TODO: The line above validates LoanAmount.  To fail validation, add to 'contentText' and set 'goodtoGo' to false
+		// 	add the following validaitons:
+		
+		//TODO: Validate InterestRate is between 0 and 20.  Make sure there's no alpha characters.
+
+		//TODO: Validate NbrOfYears is > 0
+		
+		//TODO: Validate EscrowAmount >= 0
+		
+		//TODO: Validate AdditionalPayemnt >= 0
+		
 		if (!goodtogo) {
 			Alert fail = new Alert(AlertType.ERROR);
 			fail.setHeaderText("Error!");
@@ -315,7 +309,6 @@ public class LoanCalcViewController implements Initializable {
 
 		lblMonthlyPayment.setText(fmtCurrency.format(
 				loanExtra.GetPMT() + 
-				//loanExtra.getLoanPayments().get(0).getPayment()
 				+ loanExtra.getAdditionalPayment() + loanExtra.getEscrow()));		
 		lblTotalEscrow.setText(fmtCurrency.format(loanExtra.getTotalEscrow()));
 		

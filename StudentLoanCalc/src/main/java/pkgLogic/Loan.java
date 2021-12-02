@@ -31,53 +31,39 @@ public class Loan {
 
 		double RemainingBalance = LoanAmount;
 		int PaymentCnt = 1;
-		while (RemainingBalance >= this.GetPMT() + this.AdditionalPayment) {
+		
+		//TODO: Create a payment until 'remaining balance' is < PMT + Additional Payment
+		//		Hint: use while loop
 
-			Payment payment = new Payment(RemainingBalance, PaymentCnt++, startDate, this, false);
-			RemainingBalance = payment.getEndingBalance();
-			startDate = startDate.plusMonths(1);
-			loanPayments.add(payment);
-		}
-
-		Payment payment = new Payment(RemainingBalance, PaymentCnt++, startDate, this, true);
-		loanPayments.add(payment);
+		//TODO: Create final payment (last payment might be partial payment)
 	}
 
 	public double GetPMT() {
 		double PMT = 0;
-		PMT = FinanceLib.pmt(this.InterestRate/12, 
-				this.LoanPaymentCnt,
-				this.LoanAmount, 
-				this.LoanBalanceEnd, this.bCompoundingOption);
+		//TODO: Calculate PMT (use FinanceLib.pmt)
 		return Math.abs(PMT);
 	}
 
 	public double getTotalPayments() {
 		double tot = 0;
-		for (Payment val : this.loanPayments) {
-			tot += val.getPayment();
-		}
+		//TODO: Calculate total payments
 		return tot;
 	}
 
 	public double getTotalInterest() {
- 
+
 		double interest = 0;
-		for (Payment val : this.loanPayments) {
-			interest += val.getInterestPayment();
-		}
+		//TODO: Calculate total Interest
 		return interest;
-		
+
 	}
-	
+
 	public double getTotalEscrow() {
-		 
+
 		double escrow = 0;
-		for (Payment val : this.loanPayments) {
-			escrow += val.getEscrowPayment();
-		}
+		//TODO: Calculate total escrow
 		return escrow;
-		
+
 	}
 
 	public double getLoanAmount() {
