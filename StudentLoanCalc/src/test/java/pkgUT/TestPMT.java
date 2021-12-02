@@ -6,7 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import pkgLogic.Loan;
+import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 import pkgLogic.Loan;
