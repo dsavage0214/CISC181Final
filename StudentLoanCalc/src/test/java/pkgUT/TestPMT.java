@@ -51,6 +51,23 @@ public class TestPMT {
 		assertEquals(loan.getTotalPayments(), 93033.62, 0.01);
 		assertEquals(loan.getTotalInterest(), 43035.87, 0.01);
 	}
+	
+	@Test
+	public void TestLoanWithExtraPayment() {
+		
+		//This unit test should work with the values given
+		double dLoanAmount = 50000;
+		double dInterestRate = 0.07;
+		int iNbrOfYears = 20;
+		LocalDate localDate = LocalDate.now();
+		double dAdditionalPayment = 200;
+		double dEscrow = 0;
+
+		Loan loan = new Loan(dLoanAmount, dInterestRate, iNbrOfYears, localDate, dAdditionalPayment, dEscrow);
+
+		//TODO: Assert correct values based on amort spreadsheet (total payments, total payment amt, 
+		//		total interest, total interest saved, total payments saved.
+	}	
 }
 
  
